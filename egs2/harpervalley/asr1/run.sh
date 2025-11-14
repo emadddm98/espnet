@@ -21,8 +21,10 @@ asr_config=conf/train_asr.yaml
     --audio_format flac\
     --feats_type raw\
     --max_wav_duration 30 \
-    --inference_asr_model valid.acc.ave_10best.pth\
+    --inference_asr_model valid.acc.ave_5best.pth\
     --asr_config "${asr_config}" \
     --train_set "${train_set}" \
     --valid_set "${valid_set}" \
     --test_sets "${test_sets}" "$@"
+
+#PATCH: valid.acc.ave_10best.pth -> valid.acc.ave_5best.pth

@@ -1,0 +1,35 @@
+# network architecture
+# encoder related - SET TO NULL
+encoder: null
+
+# decoder related
+decoder: s4
+decoder_conf:
+    input_layer: "embed"
+    dropout: 0.1
+    prenorm: true
+    n_layers: 4
+    transposed: false
+    layer:
+        _name_: s4
+        d_state: 512
+        l_max: null
+        bidirectional: true #false ~67% 20 epochs
+        measure: "legs"
+        dropout: 0.1
+    residual: null
+    norm: layer
+optim: adam
+optim_conf:
+    lr: 0.0002
+scheduler: warmuplr     # pytorch v1.1.0+ required
+scheduler_conf:
+    warmup_steps: 25000
+max_epoch: 200
+keep_nbest_models: 5
+
+# Model configuration
+model_conf:
+    ctc_weight: 0.3
+    lsm_weight: 0.1
+    length_normalized_loss: false

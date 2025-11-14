@@ -21,22 +21,24 @@ if [ $# -gt 1 ]; then
         valid_inference_folder=$2
         test_inference_folder=$3
 else
-        valid_inference_folder="inference_asr_model_valid.acc.ave_5best/valid/"
+        # PATCHED
+        valid_inference_folder="inference_asr_model_valid.acc.ave_5best/org/valid/"
         test_inference_folder="inference_asr_model_valid.acc.ave_5best/test/"
 fi
 
 python local/score.py --exp_root ${asr_expdir} --valid_folder ${valid_inference_folder} --test_folder ${test_inference_folder}
 
+#PATCHED ref_asr, hyp_asr -> ref, hyp
 sclite \
-            -r "${asr_expdir}/${valid_inference_folder}/score_wer/ref_asr.trn" trn \
-            -h "${asr_expdir}/${valid_inference_folder}/score_wer/hyp_asr.trn" trn \
+            -r "${asr_expdir}/${valid_inference_folder}/score_wer/ref.trn" trn \
+            -h "${asr_expdir}/${valid_inference_folder}/score_wer/hyp.trn" trn \
             -i rm -o all stdout > "${asr_expdir}/${valid_inference_folder}/score_wer/result_asr.txt"
 echo "Write ASR result in ${asr_expdir}/${valid_inference_folder}/score_wer/result_asr.txt"
                 grep -e Avg -e SPKR -m 2 "${asr_expdir}/${valid_inference_folder}/score_wer/result_asr.txt"
 
 sclite \
-            -r "${asr_expdir}/${test_inference_folder}/score_wer/ref_asr.trn" trn \
-            -h "${asr_expdir}/${test_inference_folder}/score_wer/hyp_asr.trn" trn \
+            -r "${asr_expdir}/${test_inference_folder}/score_wer/ref.trn" trn \
+            -h "${asr_expdir}/${test_inference_folder}/score_wer/hyp.trn" trn \
             -i rm -o all stdout > "${asr_expdir}/${test_inference_folder}/score_wer/result_asr.txt"
 echo "Write ASR result in ${asr_expdir}/${test_inference_folder}/score_wer/result_asr.txt"
                 grep -e Avg -e SPKR -m 2 "${asr_expdir}/${test_inference_folder}/score_wer/result_asr.txt"

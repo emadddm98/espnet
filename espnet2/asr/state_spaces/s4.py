@@ -1622,7 +1622,7 @@ class S4(nn.Module):
         self.N = d_state
         self.L = l_max
         self.bidirectional = bidirectional
-        self.channels = channels
+        # self.channels = channels
         self.transposed = transposed
 
         self.gate = gate
@@ -1661,17 +1661,22 @@ class S4(nn.Module):
             channels *= 2
             self.hyper_activation = Activation(hyper_act)
 
-        self.D = nn.Parameter(torch.randn(channels, self.H))
+        # self.D = nn.Parameter(torch.randn(channels, self.H))
 
         if self.bidirectional:
             channels *= 2
+
+        self.channels = channels
+
+        self.D = nn.Parameter(torch.randn(self.channels, self.H))
 
         # SSM Kernel
         self.kernel = SSKernel(
             self.H,
             N=self.N,
             L=self.L,
-            channels=channels,
+            # channels=channels,
+            channels=self.channels,
             verbose=verbose,
             **kernel_args,
         )

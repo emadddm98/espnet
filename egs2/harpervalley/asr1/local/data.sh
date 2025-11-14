@@ -46,15 +46,17 @@ if [ ${stage} -le 2 ] && [ ${stop_stage} -ge 2 ]; then
     if [ -n "$(ls data/tmp/)" ]; then
         rm -r data/tmp/
     fi
+    #PATCH thre audio_dir ($dirname/)
     for file in "${HARPERVALLEY}"/data/transcript/*.json; do
         filename=$(basename "${file%.*}")
         dirname="${HARPERVALLEY}/data/"
         python3 local/data_prep.py --source_dir "$dirname" \
-            --audio_dir "data/audio" \
+            --audio_dir "${HARPERVALLEY}/data/audio" \
             --filename "$filename" \
             --target_dir "data/tmp" \
             --min_length 4
     done
+    
     sed -i -e 's/<unk>/\[unk\]/g' data/tmp/text
     mkdir -p data/{train,valid,test}
     python3 local/split_data.py --source_dir "data/tmp" \
